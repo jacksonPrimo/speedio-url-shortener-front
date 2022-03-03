@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import { userAuth } from "./guards";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +8,12 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: () => import("../views/HomeView.vue"),
+    },
+    {
+      path: "/login",
+      name: "login",
+      beforeEnter: userAuth,
+      component: () => import("../views/LoginView.vue"),
     },
   ],
 });
