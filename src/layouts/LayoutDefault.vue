@@ -1,40 +1,27 @@
 <script lang="ts">
 export default {
   name: "LayoutDefault",
+  data: () => ({ tab: "images" }),
 };
 </script>
 <template>
-  <div class="q-pa-md">
-    <q-layout
-      view="lHh lpr lFf"
-      container
-      style="height: 400px"
-      class="shadow-2 rounded-borders"
-    >
-      <q-header elevated>
-        <q-toolbar>
-          <q-btn flat round dense icon="menu" class="q-mr-sm" />
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-          </q-avatar>
+  <q-layout style="height: 100vh">
+    <q-header elevated class="bg-white text-primary">
+      <q-toolbar>
+        <img src="@/assets/img/logo-speedio.svg" />
+      </q-toolbar>
 
-          <q-toolbar-title>Quasar Framework</q-toolbar-title>
+      <q-tabs v-model="tab">
+        <q-tab name="Home" label="Home" icon="home" />
+        <q-tab name="Login" label="Login" icon="person" />
+        <q-tab name="Top 100" label="Top 100" icon="whatshot" />
+      </q-tabs>
+    </q-header>
 
-          <q-btn flat round dense icon="whatshot" />
-        </q-toolbar>
-
-        <q-tabs v-model="tab">
-          <q-tab name="images" label="Images" />
-          <q-tab name="videos" label="Videos" />
-          <q-tab name="articles" label="Articles" />
-        </q-tabs>
-      </q-header>
-
-      <q-page-container>
-        <q-page class="q-pa-md">
-          <slot></slot>
-        </q-page>
-      </q-page-container>
-    </q-layout>
-  </div>
+    <q-page-container>
+      <q-page>
+        <slot></slot>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
