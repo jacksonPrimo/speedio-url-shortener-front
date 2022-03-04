@@ -5,12 +5,13 @@ import { storeToRefs } from "pinia";
 export default {
   setup() {
     const store = authStore();
-    const { authenticated, userAuthenticated, tokens } = storeToRefs(store);
+    const { authenticated, userAuthenticated, getRefreshToken } =
+      storeToRefs(store);
     const { signOut } = store;
     return {
       authenticated,
       userAuthenticated,
-      tokens,
+      getRefreshToken,
       signOut,
     };
   },
@@ -20,7 +21,7 @@ export default {
   }),
   methods: {
     logout() {
-      axios.delete(`auth/signout/${this.tokens.refreshToken}`);
+      axios.delete(`auth/signout/${this.getRefreshToken}`);
       this.signOut();
     },
   },

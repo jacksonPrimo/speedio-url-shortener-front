@@ -7,10 +7,7 @@ export const authStore = defineStore("auth", {
   }),
   getters: {
     authenticated: (state) => !!state.accessToken,
-    tokens: (state) => ({
-      accessToken: state.accessToken,
-      refreshToken: state.refreshToken,
-    }),
+    getRefreshToken: (state) => state.refreshToken,
     userAuthenticated: (state) => {
       if (state.accessToken) {
         const data = jwt_decode(state.accessToken);
@@ -36,7 +33,7 @@ export const authStore = defineStore("auth", {
       this.accessToken = null;
       this.refreshToken = null;
     },
-    refreshToken(accessToken: string) {
+    makeRefreshToken(accessToken: string) {
       this.accessToken = accessToken;
       localStorage.setItem("accessToken", accessToken);
     },
