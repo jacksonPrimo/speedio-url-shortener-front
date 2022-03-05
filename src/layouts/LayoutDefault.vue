@@ -48,6 +48,7 @@ export default {
         />
 
         <q-btn-dropdown
+          data-test-id="user-authenticated-email"
           v-if="authenticated"
           auto-close
           stretch
