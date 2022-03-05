@@ -4,8 +4,14 @@
       <q-card-section>
         <div class="text-h6 text-primary">Já é um usuário? Faça login:</div>
       </q-card-section>
-      <q-form @submit="login" class="q-gutter-md" ref="formSignin">
+      <q-form
+        data-test-id="form-signin"
+        @submit="login"
+        class="q-gutter-md"
+        ref="formSignin"
+      >
         <q-input
+          data-test-id="email-signin"
           v-model="formSignin.email"
           label="Email"
           lazy-rules
@@ -20,6 +26,7 @@
         />
         <q-input
           v-model="formSignin.password"
+          data-test-id="password-signin"
           label="Senha"
           :type="showSigninPassword ? 'password' : 'text'"
           :rules="[
@@ -36,7 +43,13 @@
             />
           </template>
         </q-input>
-        <q-btn label="Entrar" outline color="primary" type="submit" />
+        <q-btn
+          data-test-id="btn-submit-signin"
+          label="Entrar"
+          outline
+          color="primary"
+          type="submit"
+        />
       </q-form>
     </q-card>
     <q-card class="col-12 col-md-6 q-pa-md">
@@ -49,6 +62,7 @@
         <div class="row">
           <div class="col">
             <q-input
+              data-test-id="email-signup"
               v-model="formSignup.email"
               label="Email"
               lazy-rules
@@ -66,6 +80,7 @@
         <div class="row justify-between">
           <div class="col-6">
             <q-input
+              data-test-id="name-signup"
               v-model="formSignup.name"
               label="Nome"
               :rules="[
@@ -77,6 +92,7 @@
           </div>
           <div class="col-5">
             <q-input
+              data-test-id="password-signup"
               v-model="formSignup.password"
               :type="showSignupPassword ? 'password' : 'text'"
               label="Senha"
@@ -100,7 +116,13 @@
           </div>
         </div>
         <div class="row q-mt-lg">
-          <q-btn label="Cadastrar" outline color="primary" type="submit" />
+          <q-btn
+            data-test-id="btn-submit-signup"
+            label="Cadastrar"
+            outline
+            color="primary"
+            type="submit"
+          />
         </div>
       </q-form>
     </q-card>

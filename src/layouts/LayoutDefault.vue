@@ -44,6 +44,7 @@ export default {
           icon="person"
           to="/login"
           exact
+          data-test-id="link-to-login"
         />
 
         <q-btn-dropdown
