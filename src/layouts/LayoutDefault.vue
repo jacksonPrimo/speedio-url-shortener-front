@@ -1,18 +1,14 @@
 <script lang="ts">
-import { authStore } from "../stores/auth";
 import axios from "../services/axiosService";
-import { storeToRefs } from "pinia";
+import { AuthStore } from "../stores/auth";
+import { UrlStore } from "../stores/urls";
 export default {
   setup() {
-    const store = authStore();
-    const { authenticated, userAuthenticated, getRefreshToken } =
-      storeToRefs(store);
-    const { signOut } = store;
+    const authStore = AuthStore();
+    const urlStore = UrlStore();
     return {
-      authenticated,
-      userAuthenticated,
-      getRefreshToken,
-      signOut,
+      authStore,
+      urlStore,
     };
   },
   name: "LayoutDefault",
@@ -21,8 +17,9 @@ export default {
   }),
   methods: {
     logout() {
-      axios.delete(`auth/signout/${this.getRefreshToken}`);
-      this.signOut();
+      axios.delete(`auth/signout/${this.authStore.getRefreshToken}`);
+      this.urlStore.reset();
+      this.authStore.signOut();
     },
   },
 };
@@ -34,11 +31,11 @@ export default {
         <img src="@/assets/img/logo-speedio.svg" />
       </q-toolbar>
 
-      <q-tabs v-model="tab">
+      <q-tabs v-model="tab" inline-label>
         <q-route-tab name="Home" label="Home" icon="home" to="/" exact />
         <q-tab name="Top 100" label="Top 100" icon="whatshot" />
         <q-route-tab
-          v-if="!authenticated"
+          v-if="!authStore.authenticated"
           name="Login"
           label="Login"
           icon="person"
@@ -49,12 +46,12 @@ export default {
 
         <q-btn-dropdown
           data-test-id="user-authenticated-email"
-          v-if="authenticated"
+          v-else
           auto-close
           stretch
           flat
           icon="person"
-          :label="userAuthenticated.email"
+          :label="authStore.userAuthenticated.email"
         >
           <q-list>
             <q-item clickable @click="logout">
