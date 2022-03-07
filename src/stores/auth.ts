@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import jwt_decode from "jwt-decode";
-export const authStore = defineStore("auth", {
+export const AuthStore = defineStore("auth", {
   state: () => ({
     accessToken: localStorage.getItem("accessToken"),
     refreshToken: localStorage.getItem("refreshToken"),

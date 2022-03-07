@@ -132,11 +132,11 @@
 <script lang="ts">
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
-import { authStore } from "../stores/auth";
+import { AuthStore } from "../stores/auth";
 import axios from "../services/axiosService";
 export default {
   setup() {
-    const store = authStore();
+    const store = AuthStore();
     return {
       v$: useVuelidate(),
       store,
