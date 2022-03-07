@@ -1,8 +1,8 @@
 import axios from "axios";
 import { createPinia } from "pinia";
-import { authStore } from "@/stores/auth";
+import { AuthStore } from "@/stores/auth";
 const pinia = createPinia();
-const authS = authStore(pinia);
+const authStore = AuthStore(pinia);
 
 const axiosService = axios.create({
   baseURL: (import.meta.env.VITE_API_URL as string) || "http://localhost:3000/",
@@ -32,11 +32,11 @@ axiosService.interceptors.response.use(
             refreshToken: localStorage.getItem("refreshToken"),
           });
           const { accessToken } = resp.data;
-          authS.makeRefreshToken(accessToken);
+          authStore.makeRefreshToken(accessToken);
           return axiosService(originalConfig);
         } catch (_error: any) {
           if (_error.status && _error.status == 403) {
-            authS.signOut();
+            authStore.signOut();
           }
           return Promise.reject(_error);
         }
