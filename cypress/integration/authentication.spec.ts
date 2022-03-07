@@ -56,6 +56,27 @@ describe("authentication", () => {
       cy.get(".swal2-title").contains("Email ou senha incorreto(a)");
       cy.get(".q-field__messages").should("be.hidden");
     });
+    it("should make login", () => {
+      cy.intercept(
+        {
+          method: "POST",
+          url: "auth/signin",
+          hostname: "localhost",
+        },
+        {
+          statusCode: 200,
+          body: {
+            accessToken,
+            refreshToken,
+          },
+        }
+      );
+      cy.visit("/login");
+      cy.get('[data-test-id="email-signin"]').type("email-valid@email.com");
+      cy.get('[data-test-id="password-signin"]').type("123456");
+      cy.get('[data-test-id="btn-submit-signin"]').click();
+      cy.url().should("not.include", "/login");
+    });
   });
 
   describe("Register", () => {
