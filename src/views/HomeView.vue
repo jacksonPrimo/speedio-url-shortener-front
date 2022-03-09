@@ -54,13 +54,13 @@
               <q-item-section>
                 <p>
                   url gerada:
-                  <a
+                  <router-link
                     data-test-id="link-generated-url"
                     target="_blank"
-                    :href="`${baseUrl}/${url.id}`"
+                    :to="{ name: 'redirect', params: { urlId: url.id } }"
                   >
                     {{ url.id }}
-                  </a>
+                  </router-link>
                 </p>
                 <p>
                   url original:
@@ -180,7 +180,11 @@ export default {
           })
           .catch(async (e) => {
             this.finishProgressBar(interval, false);
-            await this.$swal.fire("Erro", "", "error");
+            await this.$swal.fire(
+              "Erro durante a criação da url",
+              "Tente novamente mais tarde",
+              "error"
+            );
             this.bar.inPogress = false;
           });
       }
@@ -200,7 +204,6 @@ export default {
             this.urlStore.remove(index, false);
           })
           .catch((e) => {
-            console.log(e);
             let msg: string;
             if (e.status == 404) {
               msg = "url não encontrada";
