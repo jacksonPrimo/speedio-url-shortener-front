@@ -15,6 +15,11 @@ const router = createRouter({
       beforeEnter: userAuth,
       component: () => import("../views/LoginView.vue"),
     },
+    {
+      path: "/:urlId",
+      name: "redirect",
+      component: () => import("../views/RedirectView.vue"),
+    },
   ],
 });
 
