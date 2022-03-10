@@ -16,6 +16,11 @@ const router = createRouter({
       component: () => import("../views/LoginView.vue"),
     },
     {
+      path: "/top100",
+      name: "top100",
+      component: () => import("../views/Top100View.vue"),
+    },
+    {
       path: "/:urlId",
       name: "redirect",
       component: () => import("../views/RedirectView.vue"),
