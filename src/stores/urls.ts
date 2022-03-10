@@ -22,7 +22,11 @@ export const UrlStore = defineStore("urls", {
     },
     add(url: Array<IUrl> | IUrl, setLocalStorage: boolean) {
       if (url instanceof Array) {
-        this.urls = this.urls.concat(url);
+        const urls = localStorage.getItem("urls")
+          ? JSON.parse(localStorage.getItem("urls") as string)
+          : [];
+        urls.push(url);
+        this.urls = url;
       } else {
         this.urls.push(url);
       }
