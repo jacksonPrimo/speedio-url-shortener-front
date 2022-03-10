@@ -33,7 +33,14 @@ export default {
 
       <q-tabs v-model="tab" inline-label>
         <q-route-tab name="Home" label="Home" icon="home" to="/" exact />
-        <q-tab name="Top 100" label="Top 100" icon="whatshot" />
+        <q-route-tab
+          name="Top 100"
+          label="Top 100"
+          icon="whatshot"
+          to="/top100"
+          data-test-id="link-to-top100"
+          exact
+        />
         <q-route-tab
           v-if="!authStore.authenticated"
           name="Login"
