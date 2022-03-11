@@ -1,59 +1,63 @@
 # speedio-url-shortener-front
 
-This template should help get you started developing with Vue 3 in Vite.
+## sobre o projeto :computer:
 
-## Recommended IDE Setup
+Este projeto tem como principal função criar URLs de redirecionamento curtas e fáceis de compartilhar.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
+## lista de comandos :space_invader:
 
-## Type Support for `.vue` Imports in TS
+```bash
+# instalar as depêndencias do projeto:
+$ npm install
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+# rodar a aplicação em modo de desenvolvimento, com hot reload no endereço 'localhost:3000':
+$ npm run dev
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+# gerar uma pasta dist do projeto com seu build:
+$ npm build
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+# rodar os testes unitários
+$ npm run test:unit
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+# rodar os testes de integração usando cypress
+$ npm run test:e2e
 ```
 
-### Compile and Hot-Reload for Development
+## Diretórios do projeto
+Aqui estão alguns diretórios importantes para uma boa familiarização do projeto
 
-```sh
-npm run dev
-```
+### `components`
 
-### Type-Check, Compile and Minify for Production
+Este diretório contém componentes que abstraem uma lógica própria e que podem ser reaproveitados pelas paginas da aplicação
 
-```sh
-npm run build
-```
+### `layouts`
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+Este diretório contém involocrus que envelopam as paginas que os encorporam. Em outras palavras são componentes que possuem uma parte renderizada dinamicamente pela pagina que faz uso da mesma.
 
-```sh
-npm run test:unit
-```
+### `views`
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+Este diretório abriga as paginas da aplicação.
 
-```sh
-npm run build
-npm run test:e2e # or `npm run test:e2e:ci` for headless testing
-```
+### `assets`
 
-### Lint with [ESLint](https://eslint.org/)
+Este diretório contem arquivos estaticos como imagens, css, fontes etc.
 
-```sh
-npm run lint
-```
+### `store`
+
+Este diretório contem arquivos relacionados a pinia contendo as regras do gerenciamento de estado da aplicação.
+
+### `plugins`
+
+Este diretório contem plugins personalizados para o vue.
+
+### `router`
+
+Este diretório contem o arquivo de rotas da aplicação e os middlewares de acesso.
+
+### `cypress`
+
+Este diretório contém os arquivos a dados referentes ao teste de integração.
+
+### `test`
+
+Este diretório contém os arquivos a dados referentes ao teste unitário.
