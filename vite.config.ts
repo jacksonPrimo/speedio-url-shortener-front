@@ -4,7 +4,6 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -16,6 +15,11 @@ export default defineConfig({
     }),
     vueJsx(),
   ],
+  test: {
+    globals: false,
+    environment: "happy-dom",
+    setupFiles: ["./test/setup.ts"],
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
