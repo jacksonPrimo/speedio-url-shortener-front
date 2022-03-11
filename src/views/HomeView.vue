@@ -112,7 +112,6 @@
 import { UrlStore } from "../stores/urls";
 import useVuelidate from "@vuelidate/core";
 import { required, url } from "@vuelidate/validators";
-import axios from "../services/axiosService";
 import { AuthStore } from "../stores/auth";
 import { copyToClipboard } from "quasar";
 import LoadBar from "../components/loadBar.vue";
@@ -145,7 +144,7 @@ export default {
   },
   mounted() {
     if (this.authStore.authenticated) {
-      axios.get("url").then((resp) => {
+      this.$axios.get("url").then((resp) => {
         this.urlStore.add(resp.data);
       });
     }
@@ -158,7 +157,7 @@ export default {
       } else {
         this.$refs.loadbar.init();
         try {
-          const resp = await axios.post("/url", {
+          const resp = await this.$axios.post("/url", {
             originalUrl: this.formUrl.url,
           });
           this.urlStore.add(resp.data, !this.authStore.authenticated);
@@ -183,7 +182,7 @@ export default {
         cancelButtonText: `Cancelar`,
       });
       if (proceed.isConfirmed) {
-        axios
+        this.$axios
           .delete(`/url/${id}`)
           .then(() => {
             this.$swal.fire("Url removida com sucesso!", "", "success");

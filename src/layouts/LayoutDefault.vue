@@ -1,5 +1,4 @@
 <script lang="ts">
-import axios from "../services/axiosService";
 import { AuthStore } from "../stores/auth";
 import { UrlStore } from "../stores/urls";
 export default {
@@ -17,7 +16,7 @@ export default {
   }),
   methods: {
     logout() {
-      axios.delete(`auth/signout/${this.authStore.getRefreshToken}`);
+      this.$axios.delete(`auth/signout/${this.authStore.getRefreshToken}`);
       this.urlStore.reset();
       this.authStore.signOut();
     },

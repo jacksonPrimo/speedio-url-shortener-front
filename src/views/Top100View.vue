@@ -49,14 +49,13 @@
 </template>
 
 <script lang="ts">
-import axios from "../services/axiosService";
 export default {
   data: () => ({
     urls: [],
     notFoundUrls: false,
   }),
   mounted() {
-    axios
+    this.$axios
       .get("url/mostViewed")
       .then((resp) => {
         this.urls = resp.data;

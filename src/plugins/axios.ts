@@ -4,11 +4,11 @@ import { AuthStore } from "@/stores/auth";
 const pinia = createPinia();
 const authStore = AuthStore(pinia);
 
-const axiosService = axios.create({
+const axiosPlugin = axios.create({
   baseURL: (import.meta.env.VITE_API_URL as string) || "http://localhost:3000/",
   timeout: 5000,
 });
-axiosService.interceptors.request.use(
+axiosPlugin.interceptors.request.use(
   (config: any) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -18,7 +18,7 @@ axiosService.interceptors.request.use(
   },
   (err) => Promise.reject(err)
 );
-axiosService.interceptors.response.use(
+axiosPlugin.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -28,12 +28,12 @@ axiosService.interceptors.response.use(
       if (error.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
         try {
-          const resp = await axiosService.post("/auth/refreshtoken", {
+          const resp = await axiosPlugin.post("/auth/refreshtoken", {
             refreshToken: localStorage.getItem("refreshToken"),
           });
           const { accessToken } = resp.data;
           authStore.makeRefreshToken(accessToken);
-          return axiosService(originalConfig);
+          return axiosPlugin(originalConfig);
         } catch (_error: any) {
           if (_error.status && _error.status == 403) {
             authStore.signOut();
@@ -45,4 +45,4 @@ axiosService.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-export default axiosService;
+export default axiosPlugin;

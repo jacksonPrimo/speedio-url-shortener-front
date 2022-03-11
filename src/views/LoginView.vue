@@ -133,7 +133,6 @@
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import { AuthStore } from "../stores/auth";
-import axios from "../services/axiosService";
 export default {
   setup() {
     const store = AuthStore();
@@ -172,7 +171,7 @@ export default {
         this.$swal.fire("Preencha todos os dados corretamente", "", "error");
         this.$refs.formSignin.validate();
       } else {
-        axios
+        this.$axios
           .post("/auth/signin", this.formSignin)
           .then((resp) => {
             this.store.signIn(resp.data);
@@ -198,7 +197,7 @@ export default {
         this.$swal.fire("Preencha todos os dados corretamente", "", "error");
         this.$refs.formSignup.validate();
       } else {
-        axios
+        this.$axios
           .post("auth/signup", this.formSignup)
           .then(() => {
             this.$swal.fire(

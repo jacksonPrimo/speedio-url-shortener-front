@@ -9,14 +9,13 @@
   </div>
 </template>
 <script lang="ts">
-import axios from "../services/axiosService";
 export default {
   data: () => ({
     notFound: false,
     url: null,
   }),
   mounted() {
-    axios
+    this.$axios
       .get(`/url/${this.$route.params.urlId}`)
       .then((resp) => {
         this.url = resp.data;
