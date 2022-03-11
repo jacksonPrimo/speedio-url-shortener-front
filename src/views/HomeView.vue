@@ -34,14 +34,9 @@
             </q-input>
           </q-form>
           <div class="q-pa-md">
-            <q-linear-progress
-              stripe
-              size="15px"
-              :color="bar.color"
-              :value="bar.progress"
-              v-if="bar.inPogress"
-            />
+            <LoadBar ref="loadbar"></LoadBar>
           </div>
+          <div ref="progress"></div>
         </q-card-section>
         <div class="q-pa-md" v-if="urlStore.getUrls.length">
           <q-list bordered padding separator class="rounded-borders">
@@ -120,8 +115,10 @@ import { required, url } from "@vuelidate/validators";
 import axios from "../services/axiosService";
 import { AuthStore } from "../stores/auth";
 import { copyToClipboard } from "quasar";
+import LoadBar from "../components/loadBar.vue";
 export default {
   name: "HomeView",
+  components: { LoadBar },
   setup() {
     const authStore = AuthStore();
     const urlStore = UrlStore();
@@ -134,11 +131,6 @@ export default {
   data: () => ({
     formUrl: {
       link: "",
-    },
-    bar: {
-      color: "primary",
-      inPogress: false,
-      progress: 0.0,
     },
   }),
   validations: () => ({
@@ -159,34 +151,28 @@ export default {
     }
   },
   methods: {
-    createUrl() {
+    async createUrl() {
       if (this.v$.formUrl.$invalid) {
         this.$swal.fire("Preencha com um link válido", "", "error");
         this.$refs.formUrl.validate();
       } else {
-        this.resetProgressBar();
-        const interval = setInterval(() => {
-          if (this.bar.progress < 1) {
-            this.bar.progress += 0.01;
-          }
-        }, 10);
-        axios
-          .post("/url", { originalUrl: this.formUrl.url })
-          .then(async (resp) => {
-            this.urlStore.add(resp.data, !this.authStore.authenticated);
-            this.finishProgressBar(interval, true);
-            await this.$swal.fire("Sucesso", "", "success");
-            this.bar.inPogress = false;
-          })
-          .catch(async (e) => {
-            this.finishProgressBar(interval, false);
-            await this.$swal.fire(
-              "Erro durante a criação da url",
-              "Tente novamente mais tarde",
-              "error"
-            );
-            this.bar.inPogress = false;
+        this.$refs.loadbar.init();
+        try {
+          const resp = await axios.post("/url", {
+            originalUrl: this.formUrl.url,
           });
+          this.urlStore.add(resp.data, !this.authStore.authenticated);
+          this.$refs.loadbar.success();
+          await this.$swal.fire("Sucesso", "", "success");
+        } catch (e) {
+          this.$refs.loadbar.fail();
+          await this.$swal.fire(
+            "Erro durante a criação da url",
+            "Tente novamente mais tarde",
+            "error"
+          );
+        }
+        this.$refs.loadbar.reset();
       }
     },
     async deleteUrl(id: number, index: number) {
@@ -213,21 +199,6 @@ export default {
             this.$swal.fire("Erro ao deletar url!", msg, "error");
           });
       }
-    },
-    finishProgressBar(interval: any, success: boolean) {
-      clearInterval(interval);
-      if (success) {
-        this.bar.progress = 1.0;
-        this.bar.color = "positive";
-      } else {
-        this.bar.progress = 0.0;
-        this.bar.color = "negative";
-      }
-    },
-    resetProgressBar() {
-      this.bar.color = "primary";
-      this.bar.progress = 0;
-      this.bar.inPogress = true;
     },
     copyLink(link: string) {
       copyToClipboard(link);
