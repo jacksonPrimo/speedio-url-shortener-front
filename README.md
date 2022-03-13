@@ -4,17 +4,36 @@
 
 Este projeto tem como principal função criar URLs de redirecionamento curtas e fáceis de compartilhar.
 
-## lista de comandos :space_invader:
+## Como executar o projeto :collision:
+<ol>
+  <li>
+  Instale as dependencias do projeto:
 
 ```bash
-# instalar as depêndencias do projeto:
-$ npm install
+  $ npm install
+```
+  </li>
+  <li>
+  Execute a aplicação em modo de desenvolvimento com hot reload:
 
-# rodar a aplicação em modo de desenvolvimento, com hot reload no endereço 'localhost:3000':
-$ npm run dev
+```bash
+  $ npm run dev
+```
+  </li>
+  <li>
+  Ou se preferir crie uma build do projeto e execute os arquivos de distribuição:
 
-# gerar uma pasta dist do projeto com seu build:
-$ npm build
+```bash
+  # este comando irá gerar uma pasta dist na raiz do projeto
+  $ npm run build
+```
+  </li>
+</ol>
+
+
+## lista de outros comandos :space_invader:
+
+```bash
 
 # rodar os testes unitários
 $ npm run test:unit
@@ -23,7 +42,7 @@ $ npm run test:unit
 $ npm run test:e2e
 ```
 
-## Diretórios do projeto
+## Diretórios do projeto :file_folder:
 Aqui estão alguns diretórios importantes para uma boa familiarização do projeto
 
 ### `components`
@@ -61,3 +80,6 @@ Este diretório contém os arquivos a dados referentes ao teste de integração.
 ### `test`
 
 Este diretório contém os arquivos a dados referentes ao teste unitário.
+
+## Link da aplicação no ar :link:
+https://speedio-url-shortener.netlify.app
