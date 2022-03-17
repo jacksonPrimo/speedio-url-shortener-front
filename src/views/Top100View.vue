@@ -25,7 +25,7 @@
         :side="index % 2 == 0 ? 'left' : 'right'"
       >
         <template v-slot:title>
-          <a :href="url.id">
+          <a :href="url.id" target="_blank" @click="url.views += 1">
             {{ url.id }}
           </a>
         </template>
