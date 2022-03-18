@@ -174,10 +174,18 @@ export default {
         : "loose";
     },
     ordenedUrls() {
-      return this.urls.filter((url) => !url.favorite);
+      if (this.authStore.authenticated) {
+        return this.urls.filter((url) => !url.favorite);
+      } else {
+        return this.urls;
+      }
     },
     ordenedFavorites() {
-      return this.urls.filter((url) => url.favorite);
+      if (this.authStore.authenticated) {
+        return this.urls.filter((url) => url.favorite);
+      } else {
+        return [];
+      }
     },
   },
 };
