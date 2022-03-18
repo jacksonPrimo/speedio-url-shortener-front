@@ -18,14 +18,14 @@
       </q-timeline-entry>
 
       <q-timeline-entry
-        v-for="(url, index) in urls"
+        v-for="(url, index) in ordenedFavorites"
         :key="index"
         class="text-primary"
-        data-test-id="url-of-list"
+        data-test-id="favorite-of-list"
         :side="index % 2 == 0 ? 'left' : 'right'"
       >
         <template v-slot:title>
-          <a :href="url.id">
+          <a :href="url.id" target="_blank">
             {{ url.id }}
           </a>
         </template>
@@ -36,8 +36,58 @@
           class="text-white bg-primary text-center rounded-borders q-py-md q-px-md"
           style="word-break: break-all"
         >
-          <p>visualizações: {{ url.views }}</p>
-          <p>link original: {{ url.originalUrl }}</p>
+          <q-item>
+            <q-item-section avatar>
+              <q-icon
+                color="white"
+                name="star"
+                @click="removeFavorite(url.id, url.favorite)"
+              />
+            </q-item-section>
+            <q-item-section>
+              <p>visualizações: {{ url.views }}</p>
+              <p>link original: {{ url.originalUrl }}</p>
+            </q-item-section>
+          </q-item>
+        </div>
+      </q-timeline-entry>
+      <q-timeline-entry heading v-if="ordenedFavorites.length">
+        <h6 class="text-primary">Favoritos</h6>
+      </q-timeline-entry>
+
+      <q-timeline-entry
+        v-for="(url, index) in ordenedUrls"
+        :key="index"
+        class="text-primary"
+        data-test-id="url-of-list"
+        :side="index % 2 == 0 ? 'left' : 'right'"
+      >
+        <template v-slot:title>
+          <a :href="url.id" target="_blank">
+            {{ url.id }}
+          </a>
+        </template>
+        <template v-slot:subtitle>
+          {{ index + 1 }}
+        </template>
+        <div
+          class="text-white bg-primary text-center rounded-borders q-py-md q-px-md"
+          style="word-break: break-all"
+        >
+          <q-item>
+            <q-item-section avatar v-if="authStore.authenticated">
+              <q-icon
+                color="white"
+                name="star_outline"
+                data-test-id="btn-favorite"
+                @click="addFavorite(url.id)"
+              />
+            </q-item-section>
+            <q-item-section>
+              <p>visualizações: {{ url.views }}</p>
+              <p>link original: {{ url.originalUrl }}</p>
+            </q-item-section>
+          </q-item>
         </div>
       </q-timeline-entry>
     </q-timeline>
@@ -49,10 +99,18 @@
 </template>
 
 <script lang="ts">
+import { AuthStore } from "../stores/auth";
 export default {
+  setup() {
+    const authStore = AuthStore();
+    return {
+      authStore,
+    };
+  },
   data: () => ({
     urls: [],
     notFoundUrls: false,
+    disableBtnFavorite: false,
   }),
   mounted() {
     this.$axios
@@ -69,6 +127,44 @@ export default {
         );
       });
   },
+  methods: {
+    async addFavorite(urlId: string) {
+      if (!this.disableBtnFavorite) {
+        this.disableBtnFavorite = true;
+        const index = this.urls.findIndex((url) => url.id == urlId);
+        try {
+          const response = await this.$axios.post("/favorite", { urlId });
+          this.urls[index].favorite = response.data.id;
+        } catch (e) {
+          this.urls[index].favorite = null;
+          this.$swal.fire(
+            "Ocorreu um erro ao favoritar esta url",
+            "por favor tente novamente mais tarde",
+            "error"
+          );
+        }
+        this.disableBtnFavorite = false;
+      }
+    },
+    async removeFavorite(id: string, favoriteId: string) {
+      if (!this.disableBtnFavorite) {
+        this.disableBtnFavorite = true;
+        const index = this.urls.findIndex((url) => url.id == id);
+        try {
+          this.urls[index].favorite = null;
+          await this.$axios.delete(`/favorite/${favoriteId}`);
+        } catch (e) {
+          this.urls[index].favorite = id;
+          this.$swal.fire(
+            "Ocorreu um erro ao remover a url dos favoritos",
+            "por favor tente novamente mais tarde",
+            "error"
+          );
+        }
+        this.disableBtnFavorite = false;
+      }
+    },
+  },
   computed: {
     layout() {
       return this.$q.screen.lt.sm
@@ -76,6 +172,12 @@ export default {
         : this.$q.screen.lt.md
         ? "comfortable"
         : "loose";
+    },
+    ordenedUrls() {
+      return this.urls.filter((url) => !url.favorite);
+    },
+    ordenedFavorites() {
+      return this.urls.filter((url) => url.favorite);
     },
   },
 };
