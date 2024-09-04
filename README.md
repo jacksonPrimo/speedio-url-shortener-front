@@ -1,4 +1,4 @@
-# speedio-url-shortener-front
+# url-shortener-front
 
 ## sobre o projeto :computer:
 
